@@ -1,0 +1,22 @@
+h2 {
+    text-align: center;
+}
+
+img {
+    image-rendering: pixelated;
+}
+
+#thePaw {
+    width: 20%;
+    cursor: url(assets/tongue.png), auto;
+}
+
+#mainContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+body {
+    background-color: rgb(139, 255, 255);
+}
