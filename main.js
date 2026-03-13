@@ -1,24 +1,33 @@
-const LICKDISPLAY = document.getElementById("lickDisplay");
-const THEPAW = document.getElementById("thePaw");
 const TICKRATE = 50;
 
 var licks = 0;
+var lickMult = 1;
+var distRequirement = 200;
+var currentDist = 0;
 var cursorX = 0;
 var cursorY = 0;
 var oldCursorX = 0;
 var oldCursorY = 0;
-
-function updateLicks() {
-    LICKDISPLAY.innerHTML = `${licks} Paws Licked`;
-}
 
 function lick() {
     licks++;
     updateLicks();
 }
 
-function pointDistance(x1, y1, x2, y2) {
-    return Math.sqrt(Math.pow((x2-x1),2) + Math.pow((y2-y1),2));
+function licking() {
+    // Add lick progress to current lick distance
+    if (THEPAW.matches(':hover')) {
+        currentDist += pointDistance(oldCursorX, oldCursorY, cursorX, cursorY);
+        if (currentDist > distRequirement) {
+            let trig = Math.floor(currentDist/distRequirement);
+            licks += trig*lickMult;
+            currentDist -= trig*distRequirement;
+            updateLicks();
+        }
+    }
+    // Update cursor positions to prevent gaining free distance
+    oldCursorX = cursorX;
+    oldCursorY = cursorY;
 }
 
 addEventListener("mousemove", (event) => {
@@ -29,9 +38,7 @@ addEventListener("mousemove", (event) => {
 });
 
 function main() {
-    if (THEPAW.matches(':hover')) {
-        console.log(`Distance: ${pointDistance(oldCursorX, oldCursorY, cursorX, cursorY)}`);
-    }
+   licking();
 }
 setInterval(main, 1000/TICKRATE);
 
